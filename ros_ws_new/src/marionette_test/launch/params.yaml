@@ -1,0 +1,10 @@
+publisher_node:
+ ros__parameters:
+  data_count: 5
+  publish_period: 0.5
+subscriber_node:
+ ros__parameters:
+  angle_standard: 5.0
+  voltage_lowest: 11.0
+  temp_highest: 42.0
+  data_count: 5
