@@ -12,31 +12,38 @@ class SubscriberNode(Node):
         self.angle_sum=0
         self.voltage_sum=0
         self.temp_sum=0
+        self.flag=False
+    def angle_check(self,angle):
+        if angle<-5 or angle>5:
+            self.angel_state="模拟关节平衡偏差过大"
+            self.flag=True
+        else:
+            self.angel_state="模拟关节平衡偏差正常"
+    def voltage_check(self,voltage):
+        if voltage<11:
+            self.voltage_state="模拟能源核心电压过低"
+            self.flag=True
+        else:
+            self.voltage_state="模拟能源核心电压正常"
+    def temp_check(self,temp):
+        if temp>42:
+            self.temp_state="模拟能源核心温度过高"
+            self.flag=True
+        else:
+            self.temp_state="模拟能源核心温度正常"
     def callback(self,msg):
         payload=json.loads(msg.data)
         voltage=payload["voltage"]
         angle=payload["angle"]
         temp=payload["temp"]
-        flag=False
+        self.flag=False
         self.count+=1
-        if angle<-5 or angle>5:
-            angel_state="模拟关节平衡偏差过大"
-            flag=True
-        else:
-            angel_state="模拟关节平衡偏差正常"
-        if voltage<11:
-            voltage_state="模拟能源核心电压过低"
-            flag=True
-        else:
-            voltage_state="模拟能源核心电压正常"
-        if temp>42:
-            temp_state="模拟能源核心温度过高"
-            flag=True
-        else:
-            temp_state="模拟能源核心温度正常"
-        if flag:
+        self.angle_check(angle)
+        self.voltage_check(voltage)
+        self.temp_check(temp)
+        if self.flag:
             self.miscount+=1
-        self.get_logger().info(f" 第{self.count} 次前置测试：平衡偏差  {angle}°，{angel_state}，核心电压 {voltage}V，{voltage_state}，核心温度 {temp}℃，{temp_state}")
+        self.get_logger().info(f" 第{self.count} 次前置测试：平衡偏差  {angle}°，{self.angel_state}，核心电压 {voltage}V，{self.voltage_state}，核心温度 {temp}℃，{self.temp_state}")
         if self.count==8:
             self.get_logger().info(f"前置测试完成：共收到{self.count}条有效状态")
             self.get_logger().info(f"平均平衡偏差：{self.angle_sum}°，平均核心电压：{self.voltage_sum/self.count}，平均核心温度：{self.temp_sum/self.count}")

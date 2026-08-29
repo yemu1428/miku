@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msgs import Twist
+from geometry_msgs.msg import Twist
 class Circle(Node):
     def __init__(self):
         super().__init__("draw_circle")

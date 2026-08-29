@@ -4,7 +4,7 @@ from geometry_msgs.msg import Twist
 class Circle(Node):
     def __init__(self):
         super().__init__("draw_circle")
-        self.get_logger().info("start")
+        self.get_logger().info("---开始---")
         self.publisher_=self.create_publisher(Twist,"/turtle1/cmd_vel",10)
         timer_period=0.1
         self.timer=self.create_timer(timer_period,self.timer_callback)
