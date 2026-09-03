@@ -3,6 +3,7 @@
 !/my_ws/
 !/ros_ws/
 !/ros_ws_new
+!/TASK_1
 # ============ ROS 构建产物 ============
 build/
 install/
