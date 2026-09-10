@@ -10,7 +10,10 @@ class PubNode(Node):
         self.connect=[3,4,5,6,7,0,1,2]
         self.declare_parameter("start_point",1)
         self.start_point=self.get_parameter("start_point").get_parameter_value().integer_value
+        self.declare_parameter("end_point",1)
+        self.end_point=self.get_parameter("end_point").get_parameter_value().integer_value
         self.i=self.start_point-1
+        self.end_idx=self.end_point-1
         self.current_x=self.points[self.i][0]
         self.current_y=self.points[self.i][1]
         self.j=self.connect[self.i]
@@ -32,6 +35,14 @@ class PubNode(Node):
             msg_dict["current_idx"]=self.i
             msg_dict["next_idx"]=self.j
             self.get_logger().info(f"抵达目标点{self.j+1}")
+            if self.j==self.end_point:
+                self.get_logger().info(f"已经到达目标点{self.end_point}")
+                self.timer.cancel()
+                json_str=json.dumps(msg_dict)
+                ros_msg=String()
+                ros_msg.data=json_str
+                self.pub.publish(ros_msg)
+                return
             self.i=self.j
             self.j=self.connect[self.j]
             self.current_x=self.points[self.i][0]
