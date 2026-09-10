@@ -32,21 +32,22 @@ class PubNode(Node):
             msg_dict["state"]="arrive"
             msg_dict["vx"]=0.0
             msg_dict["vy"]=0.0
+            self.get_logger().info(f"================抵达目标点{self.j+1}================")
+            self.i=self.j
+            self.j=self.connect[self.j]
+            self.current_x=self.points[self.i][0]
+            self.current_y=self.points[self.i][1]
             msg_dict["current_idx"]=self.i
             msg_dict["next_idx"]=self.j
-            self.get_logger().info(f"抵达目标点{self.j+1}")
-            if self.j==self.end_point:
-                self.get_logger().info(f"已经到达目标点{self.end_point}")
+            if self.i==self.end_idx:
+                self.get_logger().info(f"================已经到达终点{self.end_point}================")
+                msg_dict["state"]="finish"
                 self.timer.cancel()
                 json_str=json.dumps(msg_dict)
                 ros_msg=String()
                 ros_msg.data=json_str
                 self.pub.publish(ros_msg)
                 return
-            self.i=self.j
-            self.j=self.connect[self.j]
-            self.current_x=self.points[self.i][0]
-            self.current_y=self.points[self.i][1]
         else:
             vx=2*dx/distance
             vy=2*dy/distance

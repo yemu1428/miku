@@ -7,8 +7,8 @@ def generate_launch_description():
             executable="publisher_demo_node",
             name="pub_node",
             parameters=[
-                {"start_point":1},
-                {"end_point":1}
+                {"start_point":5},
+                {"end_point":4}
             ]
         ),
         Node(

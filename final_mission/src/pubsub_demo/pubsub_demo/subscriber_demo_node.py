@@ -26,10 +26,12 @@ class SubNode(Node):
         self.get_logger().info(f"接收成功")
         if state=="move":
             # 此处应该是一些控制小车电机转速来实现具体速度方向及大小的实际调整
-            self.get_logger().info("move-ing")
+            self.get_logger().info("正在前往下一个目标点")
         elif state=="arrive":
             #此处应该是控制小车电机停转的代码
-            self.get_logger().info(f"arrive{current_idx}!即将前往{next_idx}")
+            self.get_logger().info(f"============到达目标点{current_idx+1}!即将前往{next_idx+1}============")
+        elif state=="finish":
+            self.get_logger().info(f"================到达终点{current_idx+1}!================")
         self.last_state=state 
 def main(args=None):
     rclpy.init(args=args)
